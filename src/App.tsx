@@ -7,6 +7,7 @@ import { IndexeddbPersistence } from "y-indexeddb";
 import InputForm from './InputForm';
 
 import Note from './Note';
+import CreateChannelForm from './CreateChannelForm';
 
 import './App.css';
 
@@ -29,13 +30,10 @@ new IndexeddbPersistence("chatnotes", doc);
 
 export default function NotesApp() {
   const [channelId, setChannelId] = useState<string>('default');
-  const [newChannelName, setNewChannelName] = useState('');
   const state = useSyncedStore(store);
-
   if (!state.channels['default']) {
     state.channels['default'] = { notes: [] };
   }
-
   const channel = state.channels[channelId];
 
   const onAddNote = (newNote: string) => {
@@ -45,12 +43,10 @@ export default function NotesApp() {
     });
   };
 
-  const handleCreateChannel = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (newChannelName.trim() && !state.channels[newChannelName]) {
+  const handleCreateChannel = (newChannelName: string) => {
+    if (!state.channels[newChannelName]) {
       state.channels[newChannelName] = { notes: [] };
       setChannelId(newChannelName);
-      setNewChannelName('');
     }
   };
 
@@ -67,18 +63,8 @@ export default function NotesApp() {
             </li>
           ))}
         </ul>
-
-        <form onSubmit={handleCreateChannel}>
-          <input
-            type="text"
-            value={newChannelName}
-            onChange={(e) => setNewChannelName(e.target.value)}
-            placeholder="New channel name"
-          />
-          <button type="submit">Create New Channel</button>
-        </form>
+        <CreateChannelForm onCreateChannel={handleCreateChannel} />
       </nav>
-
       <main>
         <section>
           <h2>Notes in {channelId}</h2>
@@ -88,11 +74,8 @@ export default function NotesApp() {
             ))}
           </ul>
         </section>
-
         <InputForm onAddNote={onAddNote} />
       </main>
     </>
   );
 }
-
-
