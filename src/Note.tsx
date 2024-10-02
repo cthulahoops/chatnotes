@@ -8,7 +8,7 @@ export default function({ content, timestamp }: { content: string, timestamp: nu
       {date &&
         <footer>
           <time dateTime={date.toISOString()}>
-            {date.toString()}
+            {date.toLocaleString()}
           </time>
         </footer>
       }
