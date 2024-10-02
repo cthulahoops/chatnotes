@@ -4,9 +4,15 @@ import { syncedStore, getYjsDoc } from "@syncedstore/core";
 import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from "y-indexeddb";
 
+import Note from './Note';
+
 import './App.css';
 
-type Note = string;
+type Note = {
+  content: string;
+  timestamp: number;
+}
+  
 type Channel = {
   notes: Note[];
 };
@@ -34,7 +40,10 @@ export default function NotesApp() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newNote.trim()) {
-      channel?.notes.push(newNote.trim());
+      channel?.notes.push({
+        content: newNote.trim(),
+        timestamp: Date.now()
+      });
       setNewNote('');
     }
   };
@@ -49,10 +58,8 @@ export default function NotesApp() {
   };
 
   return (
-    <div>
-      <h1>Collaborative Notes App</h1>
-
-      <div>
+    <>
+      <nav>
         <h2>Channels</h2>
         <ul>
           {Object.keys(state.channels).map((id) => (
@@ -63,36 +70,37 @@ export default function NotesApp() {
             </li>
           ))}
         </ul>
-      </div>
 
-      <form onSubmit={handleCreateChannel}>
-        <input
-          type="text"
-          value={newChannelName}
-          onChange={(e) => setNewChannelName(e.target.value)}
-          placeholder="New channel name"
-        />
-        <button type="submit">Create New Channel</button>
-      </form>
+        <form onSubmit={handleCreateChannel}>
+          <input
+            type="text"
+            value={newChannelName}
+            onChange={(e) => setNewChannelName(e.target.value)}
+            placeholder="New channel name"
+          />
+          <button type="submit">Create New Channel</button>
+        </form>
+      </nav>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
-          placeholder="Enter a new note"
-        />
-        <button type="submit">Add Note</button>
-      </form>
+      <main>
+        <section>
+          <h2>Notes in {channelId}</h2>
+          <ul>
+            {channel?.notes.map((note, index) => (
+              <li key={index}><Note content={note.content} timestamp={note.timestamp}/></li>
+            ))}
+          </ul>
+        </section>
 
-      <div>
-        <h2>Notes in {channelId}</h2>
-        <ul>
-          {channel?.notes.map((note, index) => (
-            <li key={index}>{note}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
+        <form onSubmit={handleSubmit}>
+          <textarea
+            value={newNote}
+            onChange={(e) => setNewNote(e.target.value)}
+            placeholder="Enter a new note"
+          />
+          <button type="submit">Add Note</button>
+        </form>
+      </main>
+    </>
   );
 }
