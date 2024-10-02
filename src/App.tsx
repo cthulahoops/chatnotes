@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSyncedStore } from "@syncedstore/react";
 import { syncedStore, getYjsDoc } from "@syncedstore/core";
 import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from "y-indexeddb";
 
-import InputForm from './InputForm';
+import AddNoteForm from './AddNoteForm';
 
 import Note from './Note';
 import CreateChannelForm from './CreateChannelForm';
@@ -74,7 +74,7 @@ export default function NotesApp() {
             ))}
           </ul>
         </section>
-        <InputForm onAddNote={onAddNote} />
+        <AddNoteForm onAddNote={onAddNote} />
       </main>
     </>
   );
