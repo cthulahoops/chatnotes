@@ -4,6 +4,8 @@ import { syncedStore, getYjsDoc } from "@syncedstore/core";
 import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from "y-indexeddb";
 
+import InputForm from './InputForm';
+
 import Note from './Note';
 
 import './App.css';
@@ -12,7 +14,7 @@ type Note = {
   content: string;
   timestamp: number;
 }
-  
+
 type Channel = {
   notes: Note[];
 };
@@ -27,7 +29,6 @@ new IndexeddbPersistence("chatnotes", doc);
 
 export default function NotesApp() {
   const [channelId, setChannelId] = useState<string>('default');
-  const [newNote, setNewNote] = useState('');
   const [newChannelName, setNewChannelName] = useState('');
   const state = useSyncedStore(store);
 
@@ -37,15 +38,11 @@ export default function NotesApp() {
 
   const channel = state.channels[channelId];
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (newNote.trim()) {
-      channel?.notes.push({
-        content: newNote.trim(),
-        timestamp: Date.now()
-      });
-      setNewNote('');
-    }
+  const onAddNote = (newNote: string) => {
+    channel?.notes.push({
+      content: newNote.trim(),
+      timestamp: Date.now()
+    });
   };
 
   const handleCreateChannel = (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,20 +84,15 @@ export default function NotesApp() {
           <h2>Notes in {channelId}</h2>
           <ul>
             {channel?.notes.map((note, index) => (
-              <li key={index}><Note content={note.content} timestamp={note.timestamp}/></li>
+              <li key={index}><Note content={note.content} timestamp={note.timestamp} /></li>
             ))}
           </ul>
         </section>
 
-        <form onSubmit={handleSubmit}>
-          <textarea
-            value={newNote}
-            onChange={(e) => setNewNote(e.target.value)}
-            placeholder="Enter a new note"
-          />
-          <button type="submit">Add Note</button>
-        </form>
+        <InputForm onAddNote={onAddNote} />
       </main>
     </>
   );
 }
+
+
