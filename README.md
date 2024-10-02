@@ -1,4 +1,4 @@
-# Collaborative Notes App
+# Chat based append-only notes.
 
 A real-time collaborative note-taking application built with React, Yjs, and Vite.
 
