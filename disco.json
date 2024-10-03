@@ -5,9 +5,9 @@
             "type": "generator"
         },
         "websocket": {
-            "command": "HOST=0.0.0.0 npx y-websocket",
+            "command": "npx y-websocket",
             "publishedPorts": [{
-                "publishedAs": 1234,
+                "publishedAs": "localhost:1234",
                 "fromContainerPort": 1234,
                 "protocol": "tcp"
             }]
