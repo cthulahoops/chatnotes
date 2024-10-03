@@ -3,6 +3,14 @@
     "services": {
         "web": {
             "type": "generator"
+        },
+        "websocket": {
+            "command": "npx y-websocket",
+            "publishedPorts": [{
+                "publishedAs": 1234,
+                "fromContainerPort": 1234,
+                "protocol": "tcp"
+            }]
         }
     }
 }
