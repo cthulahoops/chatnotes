@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSyncedStore } from "@syncedstore/react";
 import { syncedStore, getYjsDoc } from "@syncedstore/core";
-// import { WebsocketProvider } from 'y-websocket';
+import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from "y-indexeddb";
 
 import AddNoteForm from './AddNoteForm';
@@ -25,7 +25,7 @@ type DataStore = {
 
 const store = syncedStore<DataStore>({ channels: {} });
 const doc = getYjsDoc(store);
-// new WebsocketProvider("ws://localhost:1234", "react-syncedstore-notes-app", doc);
+new WebsocketProvider("wss://mistle.fawn-pirate.ts.net/", "react-syncedstore-notes-app", doc);
 new IndexeddbPersistence("chatnotes", doc);
 
 export default function NotesApp() {
