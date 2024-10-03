@@ -17,6 +17,7 @@
 }
 
 body {
+  max-height: 100svh;
   font-family: system-ui;
   line-height: 1.6;
   color: var(--color-text);
@@ -27,7 +28,7 @@ body {
 
 #root {
   display: flex;
-  min-height: 100vh;
+  height: 100svh;
 }
 
 nav {
@@ -39,6 +40,7 @@ nav {
 }
 
 main {
+  flex-shrink: 1;
   flex-grow: 1;
   padding: var(--spacing-large);
   background-color: #fff;
@@ -46,7 +48,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-large);
-  max-height: calc(100vh - 2 * var(--spacing-large));
+  min-height: 0;
 }
 
 .channel-notes {
@@ -120,7 +122,7 @@ form button:hover, form button:focus {
   #root {
     flex-direction: column;
   }
-  
+
   nav {
     width: 100%;
   }
