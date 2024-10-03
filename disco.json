@@ -7,7 +7,7 @@
         "websocket": {
             "command": "npx y-websocket",
             "publishedPorts": [{
-                "publishedAs": "localhost:1234",
+                "publishedAs": 1234,
                 "fromContainerPort": 1234,
                 "protocol": "tcp"
             }]
