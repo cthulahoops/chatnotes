@@ -3,6 +3,8 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+import './Note.css';
+
 interface NoteProps {
   content: string;
   timestamp: number;
@@ -12,14 +14,16 @@ export default function Note({ content, timestamp }: NoteProps) {
   const date = new Date(timestamp);
 
   return (
-    <article className="note">
-      <ReactMarkdown
-        components={{
-          code: CodeBlock
-        }}
-      >
-        {content}
-      </ReactMarkdown>
+    <>
+      <div>
+        <ReactMarkdown
+          components={{
+            code: CodeBlock
+          }}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
       {date && (
         <footer>
           <time dateTime={date.toISOString()}>
@@ -27,7 +31,7 @@ export default function Note({ content, timestamp }: NoteProps) {
           </time>
         </footer>
       )}
-    </article>
+    </>
   );
 }
 

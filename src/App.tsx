@@ -25,15 +25,12 @@ type DataStore = {
 
 const store = syncedStore<DataStore>({ channels: {} });
 const doc = getYjsDoc(store);
-new WebsocketProvider("ws://localhost:1234", "react-syncedstore-notes-app", doc);
+new WebsocketProvider("ws://grape.fawn-pirate.ts.net:1234", "react-syncedstore-notes-app", doc);
 new IndexeddbPersistence("chatnotes", doc);
 
 export default function NotesApp() {
   const [channelId, setChannelId] = useState<string>('default');
   const state = useSyncedStore(store);
-  if (!state.channels['default']) {
-    state.channels['default'] = { notes: [] };
-  }
   const channel = state.channels[channelId];
 
   const onAddNote = (newNote: string) => {
@@ -66,11 +63,13 @@ export default function NotesApp() {
         <CreateChannelForm onCreateChannel={handleCreateChannel} />
       </nav>
       <main>
-        <section>
+        <section className="channel-notes">
           <h2>Notes in {channelId}</h2>
           <ul>
             {channel?.notes.map((note, index) => (
-              <li key={index}><Note content={note.content} timestamp={note.timestamp} /></li>
+              <li className="note">
+                <Note key={index} content={note.content} timestamp={note.timestamp} />
+              </li>
             ))}
           </ul>
         </section>

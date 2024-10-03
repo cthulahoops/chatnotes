@@ -1,0 +1,58 @@
+.note {
+  padding: var(--spacing-small);
+  margin-bottom: var(--spacing-small);
+
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-medium);
+}
+
+.note > :first-child {
+  flex-grow: 1;
+}
+
+.note > *:last-child {
+}
+
+.note h1, .note h2, .note h3, .note h4, .note h5, .note h6 {
+  color: var(--color-heading, #2c3e50);
+  margin-top: var(--spacing-large, 1rem);
+  margin-bottom: var(--spacing-medium, 0.5rem);
+}
+
+.note p {
+  line-height: 1.6;
+  margin-bottom: var(--spacing-medium, 0.5rem);
+}
+
+.note a {
+  color: var(--color-link, #3498db);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.note a:hover, .note a:focus {
+  color: var(--color-link-hover, #2980b9);
+  text-decoration: underline;
+}
+
+/* .note pre { */
+/*   background-color: var(--color-code-background, #f8f8f8); */
+/*   border-radius: var(--border-radius, 0.5rem); */
+/*   padding: var(--spacing-medium, 0.5rem); */
+/*   overflow-x: auto; */
+/* } */
+
+/* .note code { */
+/*   font-family: 'Courier New', Courier, monospace; */
+/*   font-size: 0.9em; */
+/* } */
+
+.note footer {
+  font-size: 0.9em;
+  color: var(--color-text-muted, #666);
+}
+
+.note time {
+  font-style: italic;
+}
