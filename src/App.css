@@ -32,7 +32,6 @@ body {
 }
 
 nav {
-  width: 15.625rem;
   background-color: var(--color-primary);
   color: var(--color-text-light);
   padding: var(--spacing-large);
@@ -65,13 +64,9 @@ nav h2 {
   color: var(--color-text-light);
 }
 
-ul {
+nav ul {
   list-style-type: none;
   padding: 0;
-}
-
-nav ul li {
-  margin-bottom: var(--spacing-medium);
 }
 
 button {
@@ -94,10 +89,14 @@ nav button.active {
   background-color: var(--color-accent);
 }
 
+
+textarea {
+  font: inherit;
+}
+
 input[type="text"], textarea {
   width: 100%;
   padding: var(--spacing-medium);
-  margin-bottom: var(--spacing-medium);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   box-sizing: border-box;
@@ -118,12 +117,51 @@ form button:hover, form button:focus {
   background-color: color-mix(in srgb, var(--color-success) 80%, black);
 }
 
-@media (max-width: 48rem) {
+nav ul {
+  display: flex;
+  gap: var(--spacing-medium);
+  flex-wrap: wrap;
+}
+
+form {
+  display: flex;
+  gap: var(--spacing-medium);
+}
+
+#root {
+  flex-direction: column;
+}
+
+@media (min-width: 48rem) {
   #root {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   nav {
-    width: 100%;
+    width: 16rem;
+  }
+
+  nav ul {
+    flex-direction: column;
+  }
+
+  form { 
+    flex-direction: column;
+  }
+
+  main {
+    padding: var(--spacing-large);
+  }
+}
+
+@media (max-width: 48rem) {
+  nav h2 {
+    display: none;
+  }
+
+  nav form {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
   }
 }

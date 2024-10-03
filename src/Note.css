@@ -1,10 +1,7 @@
 .note {
   padding: var(--spacing-small);
   margin-bottom: var(--spacing-small);
-
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-medium);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .note > :first-child {
@@ -49,8 +46,11 @@
 /* } */
 
 .note footer {
+  display: block;
   font-size: 0.9em;
   color: var(--color-text-muted, #666);
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .note time {

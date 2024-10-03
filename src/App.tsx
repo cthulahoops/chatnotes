@@ -65,13 +65,11 @@ export default function NotesApp() {
       <main>
         <section className="channel-notes">
           <h2>Notes in {channelId}</h2>
-          <ul>
+          <div>
             {channel?.notes.map((note, index) => (
-              <li className="note">
-                <Note key={index} content={note.content} timestamp={note.timestamp} />
-              </li>
+              <Note key={index} content={note.content} timestamp={note.timestamp} />
             ))}
-          </ul>
+          </div>
         </section>
         <AddNoteForm onAddNote={onAddNote} />
       </main>

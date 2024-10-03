@@ -14,7 +14,7 @@ export default function Note({ content, timestamp }: NoteProps) {
   const date = new Date(timestamp);
 
   return (
-    <>
+    <div className="note">
       <div>
         <ReactMarkdown
           components={{
@@ -31,7 +31,7 @@ export default function Note({ content, timestamp }: NoteProps) {
           </time>
         </footer>
       )}
-    </>
+    </div>
   );
 }
 
