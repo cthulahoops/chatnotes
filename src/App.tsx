@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSyncedStore } from "@syncedstore/react";
 import { syncedStore, getYjsDoc } from "@syncedstore/core";
 import { WebsocketProvider } from 'y-websocket';
@@ -33,6 +33,14 @@ export default function NotesApp() {
   const state = useSyncedStore(store);
   const channel = state.channels[channelId];
 
+  const channelNotesRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (channelNotesRef.current) {
+      channelNotesRef.current.scrollTop = channelNotesRef.current.scrollHeight;
+    }
+  }, [channelId, channel?.notes.length]);
+
   const onAddNote = (newNote: string) => {
     channel?.notes.push({
       content: newNote.trim(),
@@ -63,7 +71,7 @@ export default function NotesApp() {
         <CreateChannelForm onCreateChannel={handleCreateChannel} />
       </nav>
       <main>
-        <section className="channel-notes">
+        <section className="channel-notes" ref={channelNotesRef}>
           <h2>Notes in {channelId}</h2>
           <div>
             {channel?.notes.map((note, index) => (
