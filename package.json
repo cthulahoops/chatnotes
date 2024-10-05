@@ -12,10 +12,10 @@
   "dependencies": {
     "@syncedstore/core": "^0.6.0",
     "@syncedstore/react": "^0.6.0",
+    "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
-    "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.5.3",
     "y-indexeddb": "^9.0.12",
     "y-webrtc": "^10.3.0",
@@ -31,6 +31,7 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "prettier": "^3.3.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"

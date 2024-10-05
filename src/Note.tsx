@@ -1,9 +1,8 @@
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import { Highlight, themes } from "prism-react-renderer";
 
-import './Note.css';
+import "./Note.css";
 
 interface NoteProps {
   content: string;
@@ -28,9 +27,7 @@ export default function Note({ content, timestamp }: NoteProps) {
       </div>
       {date && (
         <footer>
-          <time dateTime={date.toISOString()}>
-            {date.toLocaleString()}
-          </time>
+          <time dateTime={date.toISOString()}>{date.toLocaleString()}</time>
         </footer>
       )}
     </div>
@@ -43,14 +40,17 @@ function preprocessMarkdown(content: string) {
   return content.replace(urlRegex, (url) => {
     // Avoid replacing URLs that are already part of a Markdown link
     const prevChar = content[content.indexOf(url) - 1];
-    if (prevChar === '(' || prevChar === ']') {
+    if (prevChar === "(" || prevChar === "]") {
       return url;
     }
     return `[${url}](${url})`;
   });
 }
 
-function ExternalLink({ children, ...props }: { children?: React.ReactNode } & React.HTMLProps<HTMLAnchorElement>) {
+function ExternalLink({
+  children,
+  ...props
+}: { children?: React.ReactNode } & React.HTMLProps<HTMLAnchorElement>) {
   return (
     <a target="_blank" rel="noopener noreferrer" {...props}>
       {children}
@@ -59,25 +59,32 @@ function ExternalLink({ children, ...props }: { children?: React.ReactNode } & R
 }
 
 type CodeBlockProps = {
-  inline?: boolean;
   className?: string;
   children?: React.ReactNode;
 };
 
-function CodeBlock({ inline, className, children, ...props }: CodeBlockProps) {
-  const match = /language-(\w+)/.exec(className || '');
-  return !inline && match ? (
-    <SyntaxHighlighter
-      style={vscDarkPlus}
-      language={match[1]}
-      PreTag="div"
-      {...props}
-    >
-      {String(children).replace(/\n$/, '')}
-    </SyntaxHighlighter>
+function CodeBlock({ className, children, ...props }: CodeBlockProps) {
+  const match = /language-(\w+)/.exec(className || "");
+  const language = match ? match[1] : "";
+  const code = String(children).replace(/\n$/, "");
+
+  return match ? (
+    <Highlight theme={themes.shadesOfPurple} code={code} language={language}>
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div key={i} {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span key={key} {...getTokenProps({ token, key })} />
+              ))}
+            </div>
+          ))}
+        </pre>
+      )}
+    </Highlight>
   ) : (
     <code className={className} {...props}>
       {children}
     </code>
   );
-};
+}
