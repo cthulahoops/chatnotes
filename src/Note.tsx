@@ -13,15 +13,17 @@ interface NoteProps {
 export default function Note({ content, timestamp }: NoteProps) {
   const date = new Date(timestamp);
 
+  const preprocessedContent = preprocessMarkdown(content);
   return (
     <div className="note">
       <div>
         <ReactMarkdown
           components={{
-            code: CodeBlock
+            code: CodeBlock,
+            a: ExternalLink,
           }}
         >
-          {content}
+          {preprocessedContent}
         </ReactMarkdown>
       </div>
       {date && (
@@ -32,6 +34,27 @@ export default function Note({ content, timestamp }: NoteProps) {
         </footer>
       )}
     </div>
+  );
+}
+
+const urlRegex = /(https?:\/\/[^\s\]()]+)/g;
+
+function preprocessMarkdown(content: string) {
+  return content.replace(urlRegex, (url) => {
+    // Avoid replacing URLs that are already part of a Markdown link
+    const prevChar = content[content.indexOf(url) - 1];
+    if (prevChar === '(' || prevChar === ']') {
+      return url;
+    }
+    return `[${url}](${url})`;
+  });
+}
+
+function ExternalLink({ children, ...props }: { children?: React.ReactNode } & React.HTMLProps<HTMLAnchorElement>) {
+  return (
+    <a target="_blank" rel="noopener noreferrer" {...props}>
+      {children}
+    </a>
   );
 }
 
