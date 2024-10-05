@@ -72,7 +72,7 @@ export default function NotesApp() {
       </nav>
       <main>
         <section className="channel-notes" ref={channelNotesRef}>
-          <h2>Notes in {channelId}</h2>
+          <h2>#{channelId}</h2>
           <div>
             {channel?.notes.map((note, index) => (
               <Note key={index} content={note.content} timestamp={note.timestamp} />
