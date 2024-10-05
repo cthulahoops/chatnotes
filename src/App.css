@@ -1,8 +1,8 @@
 :root {
-  --color-primary: #2c3e50;
-  --color-secondary: #34495e;
-  --color-accent: #3498db;
-  --color-success: #2ecc71;
+  --color-primary: hsl(315, 80%, 20%);
+  --color-accent:  hsl(315, 80%, 77%);
+
+  --color-success: hsl(150, 60%, 30%);
   --color-background: #f4f4f4;
   --color-text: #333;
   --color-text-light: #ecf0f1;
@@ -79,7 +79,7 @@ nav ul {
 
 button {
   width: 100%;
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   color: var(--color-text-light);
   border: none;
   padding: var(--spacing-medium);
@@ -146,7 +146,8 @@ form {
   }
 
   nav {
-    width: 16rem;
+    width: 20rem;
+    flex-shrink: 0;
   }
 
   nav ul {

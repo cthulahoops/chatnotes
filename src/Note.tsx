@@ -69,9 +69,9 @@ function CodeBlock({ className, children, ...props }: CodeBlockProps) {
   const code = String(children).replace(/\n$/, "");
 
   return match ? (
-    <Highlight theme={themes.shadesOfPurple} code={code} language={language}>
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={style}>
+    <Highlight theme={themes.vsDark} code={code} language={language}>
+      {({ className, tokens, getLineProps, getTokenProps }) => (
+        <code className={className}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, key) => (
@@ -79,7 +79,7 @@ function CodeBlock({ className, children, ...props }: CodeBlockProps) {
               ))}
             </div>
           ))}
-        </pre>
+        </code>
       )}
     </Highlight>
   ) : (

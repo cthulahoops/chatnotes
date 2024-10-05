@@ -57,3 +57,14 @@
   font-style: italic;
 }
 
+pre code {
+  display: block;
+}
+
+code {
+  background-color: #000;
+  color: #fff;
+  padding: 0.5rem;
+  display: inline block;
+  border-radius: 0.5rem;
+}
