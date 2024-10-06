@@ -2,7 +2,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 
 import Navigation from "./Navigation";
@@ -15,10 +14,13 @@ export default function App() {
     <Router>
       <Navigation />
       <Routes>
-        <Route path="/" element={<Navigate to="/channel/default" />} />
+        <Route path="/" element={<Index />} />
         <Route path="/channel/:channelId" element={<ChannelNotes />} />
       </Routes>
     </Router>
   );
 }
 
+function Index() {
+  return <main>Select or create a channel.</main>;
+}
