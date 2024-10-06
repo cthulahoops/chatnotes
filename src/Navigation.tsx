@@ -26,6 +26,7 @@ export default function Navigation() {
         ))}
       </ul>
       <CreateChannelForm onCreateChannel={handleCreateChannel} />
+      <Link to="/config">Settings</Link>
     </nav>
   );
 }
