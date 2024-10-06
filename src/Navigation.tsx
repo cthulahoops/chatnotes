@@ -1,11 +1,10 @@
 import CreateChannelForm from "./CreateChannelForm";
-import { useSyncedStore } from "@syncedstore/react";
 import { Link } from "react-router-dom";
 
-import store from "./store";
+import { useReactiveStore } from "./store";
 
 export default function Navigation() {
-  const state = useSyncedStore(store);
+  const state = useReactiveStore();
 
   const handleCreateChannel = (newChannelName: string) => {
     if (newChannelName && !state.channels[newChannelName]) {

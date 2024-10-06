@@ -1,0 +1,53 @@
+import { useEffect, useState, ReactNode } from "react";
+
+import useLocalStorage from "./hooks/useLocalStorage";
+
+import { SyncedStoreContext, SyncConfig } from "./store";
+
+import { WebsocketProvider } from "y-websocket";
+import { syncedStore, getYjsDoc } from "@syncedstore/core";
+import { IndexeddbPersistence } from "y-indexeddb";
+
+import { DataStore } from "./store";
+
+export default function StoreProvider({ children }: { children: ReactNode }) {
+  const [config, setConfig] = useLocalStorage<SyncConfig | null>(
+    "syncConfig",
+    null,
+  );
+  const [wsProvider, setWsProvider] = useState<WebsocketProvider | null>(null);
+
+  const store = syncedStore<DataStore>({ channels: {} });
+  const doc = getYjsDoc(store);
+
+  // Initialize IndexedDB persistence
+  new IndexeddbPersistence("chatnotes", doc);
+
+  useEffect(() => {
+    if (config && !wsProvider) {
+      const newProvider = new WebsocketProvider(
+        config.websocketUrl,
+        config.roomName,
+        doc,
+      );
+      setWsProvider(newProvider);
+    } else if (!config && wsProvider) {
+      wsProvider.disconnect();
+      setWsProvider(null);
+    }
+
+    return () => {
+      if (wsProvider) {
+        wsProvider.disconnect();
+      }
+    };
+  }, [config, wsProvider]);
+
+  const value = { store, config, setConfig, wsProvider };
+
+  return (
+    <SyncedStoreContext.Provider value={value}>
+      {children}
+    </SyncedStoreContext.Provider>
+  );
+}

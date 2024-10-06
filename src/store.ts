@@ -1,6 +1,11 @@
-import { syncedStore, getYjsDoc } from "@syncedstore/core";
+import React, { createContext, useContext } from "react";
 import { WebsocketProvider } from "y-websocket";
-import { IndexeddbPersistence } from "y-indexeddb";
+import { syncedStore } from "@syncedstore/core";
+import { useSyncedStore } from "@syncedstore/react";
+
+export type DataStore = {
+  channels: Record<string, Channel>;
+};
 
 export type Note = {
   content: string;
@@ -11,17 +16,34 @@ export type Channel = {
   notes: Note[];
 };
 
-type DataStore = {
-  channels: Record<string, Channel>;
+export type SyncConfig = {
+  websocketUrl: string;
+  roomName: string;
+  indexedDbName: string;
 };
 
-const store = syncedStore<DataStore>({ channels: {} });
-export default store;
-
-const doc = getYjsDoc(store);
-new WebsocketProvider(
-  "wss://mistle.fawn-pirate.ts.net/",
-  "react-syncedstore-notes-app",
-  doc,
+export const SyncedStoreContext = createContext<SyncedStoreContextType | null>(
+  null,
 );
-new IndexeddbPersistence("chatnotes", doc);
+
+type SyncedStoreContextType = {
+  store: ReturnType<typeof syncedStore<DataStore>>;
+  config: SyncConfig | null;
+  setConfig: React.Dispatch<React.SetStateAction<SyncConfig | null>>;
+  wsProvider: WebsocketProvider | null;
+};
+
+export function useStoreContext() {
+  const context = useContext(SyncedStoreContext);
+  if (!context) {
+    throw new Error(
+      "useSyncedStoreContext must be used within a SyncedStoreProvider",
+    );
+  }
+  return context;
+}
+
+export function useReactiveStore(): ReturnType<typeof syncedStore<DataStore>> {
+  const { store } = useStoreContext();
+  return useSyncedStore(store);
+}

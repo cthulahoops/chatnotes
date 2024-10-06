@@ -1,23 +1,23 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Navigation from "./Navigation";
 import ChannelNotes from "./ChannelNotes";
+
+import StoreProvider from "./StoreProvider";
 
 import "./App.css";
 
 export default function App() {
   return (
-    <Router>
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/channel/:channelId" element={<ChannelNotes />} />
-      </Routes>
-    </Router>
+    <StoreProvider>
+      <Router>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/channel/:channelId" element={<ChannelNotes />} />
+        </Routes>
+      </Router>
+    </StoreProvider>
   );
 }
 

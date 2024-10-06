@@ -1,15 +1,16 @@
 import { useRef, useEffect } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
-import { useSyncedStore } from "@syncedstore/react";
 import AddNoteForm from "./AddNoteForm";
 import Note from "./Note";
 
-import store from "./store";
+import { useReactiveStore } from "./store";
 
 export default function ChannelNotes() {
   const { channelId = "default" } = useParams<{ channelId: string }>();
-  const state = useSyncedStore(store);
+
+  const state = useReactiveStore();
+
   const channel = state.channels[channelId];
   const channelNotesRef = useRef<HTMLElement>(null);
 
