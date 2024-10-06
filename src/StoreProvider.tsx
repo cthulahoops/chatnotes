@@ -16,6 +16,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
     null,
   );
   const [wsProvider, setWsProvider] = useState<WebsocketProvider | null>(null);
+  const [connected, setConnected] = useState<boolean>(false);
 
   const store = syncedStore<DataStore>({ channels: {} });
   const doc = getYjsDoc(store);
@@ -31,6 +32,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
         doc,
       );
       setWsProvider(newProvider);
+      newProvider.on("status", () => setConnected(newProvider.wsconnected));
     } else if (!config && wsProvider) {
       wsProvider.disconnect();
       setWsProvider(null);
@@ -43,7 +45,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
     };
   }, [config, wsProvider]);
 
-  const value = { store, config, setConfig, wsProvider };
+  const value = { store, config, setConfig, wsProvider, connected };
 
   return (
     <SyncedStoreContext.Provider value={value}>

@@ -19,7 +19,6 @@ export type Channel = {
 export type SyncConfig = {
   websocketUrl: string;
   roomName: string;
-  indexedDbName: string;
 };
 
 export const SyncedStoreContext = createContext<SyncedStoreContextType | null>(
@@ -31,6 +30,7 @@ type SyncedStoreContextType = {
   config: SyncConfig | null;
   setConfig: React.Dispatch<React.SetStateAction<SyncConfig | null>>;
   wsProvider: WebsocketProvider | null;
+  connected: boolean;
 };
 
 export function useStoreContext() {

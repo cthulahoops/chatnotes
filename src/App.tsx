@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Navigation from "./Navigation";
 import ChannelNotes from "./ChannelNotes";
+import ConfigurationPanel from "./ConfigurationPanel";
 
 import StoreProvider from "./StoreProvider";
 
@@ -15,6 +16,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/channel/:channelId" element={<ChannelNotes />} />
+          <Route path="/config" element={<ConfigurationPanel />} />
         </Routes>
       </Router>
     </StoreProvider>
