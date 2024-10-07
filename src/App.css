@@ -164,7 +164,7 @@ a:active, a:hover {
   }
 
   nav {
-    width: 20remm
+    width: 20rem;
     flex-shrink: 0;
   }
 
