@@ -25,7 +25,6 @@ export const SyncedStoreContext = createContext<SyncedStoreContextType | null>(
 );
 
 type SyncedStoreContextType = {
-  store: ReturnType<typeof syncedStore<DataStore>>;
   config: SyncConfig | null;
   syncStore: ReturnType<typeof syncedStore<DataStore>>;
   setConfig: React.Dispatch<React.SetStateAction<SyncConfig | null>>;

@@ -11,21 +11,33 @@ import { useSyncedStore } from "@syncedstore/react";
 
 import { DataStore } from "./store";
 
+const store = syncedStore<DataStore>({ channels: {} });
+const doc = getYjsDoc(store);
+new IndexeddbPersistence("chatnotes", doc);
+
 export default function StoreProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useLocalStorage<SyncConfig | null>(
     "syncConfig",
     null,
   );
-  const [wsProvider, setWsProvider] = useState<WebsocketProvider | null>(null);
-  const [connected, setConnected] = useState<boolean>(false);
 
-  const store = syncedStore<DataStore>({ channels: {} });
-  const doc = getYjsDoc(store);
+  const { wsProvider, connected } = useWsProvider(config);
 
   // Initialize IndexedDB persistence
-  new IndexeddbPersistence("chatnotes", doc);
-
   const syncStore = useSyncedStore(store);
+
+  const value = { store, config, setConfig, wsProvider, connected, syncStore };
+
+  return (
+    <SyncedStoreContext.Provider value={value}>
+      {children}
+    </SyncedStoreContext.Provider>
+  );
+}
+
+function useWsProvider(config : SyncConfig | null) {
+  const [wsProvider, setWsProvider] = useState<WebsocketProvider | null>(null);
+  const [connected, setConnected] = useState<boolean>(false);
 
   useEffect(() => {
     if (config && !wsProvider) {
@@ -35,7 +47,10 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
         doc,
       );
       setWsProvider(newProvider);
-      newProvider.on("status", () => setConnected(newProvider.wsconnected));
+      newProvider.on("status", () => {
+        console.log("Websocket status:", newProvider.wsconnected);
+        setConnected(newProvider.wsconnected);
+      });
     } else if (!config && wsProvider) {
       wsProvider.disconnect();
       setWsProvider(null);
@@ -48,11 +63,5 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
     };
   }, [config, wsProvider]);
 
-  const value = { store, config, setConfig, wsProvider, connected, syncStore };
-
-  return (
-    <SyncedStoreContext.Provider value={value}>
-      {children}
-    </SyncedStoreContext.Provider>
-  );
+  return { wsProvider, connected };
 }
