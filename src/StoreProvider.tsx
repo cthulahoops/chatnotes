@@ -7,6 +7,7 @@ import { SyncedStoreContext, SyncConfig } from "./store";
 import { WebsocketProvider } from "y-websocket";
 import { syncedStore, getYjsDoc } from "@syncedstore/core";
 import { IndexeddbPersistence } from "y-indexeddb";
+import { useSyncedStore } from "@syncedstore/react";
 
 import { DataStore } from "./store";
 
@@ -23,6 +24,8 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 
   // Initialize IndexedDB persistence
   new IndexeddbPersistence("chatnotes", doc);
+
+  const syncStore = useSyncedStore(store);
 
   useEffect(() => {
     if (config && !wsProvider) {
@@ -45,7 +48,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
     };
   }, [config, wsProvider]);
 
-  const value = { store, config, setConfig, wsProvider, connected };
+  const value = { store, config, setConfig, wsProvider, connected, syncStore };
 
   return (
     <SyncedStoreContext.Provider value={value}>

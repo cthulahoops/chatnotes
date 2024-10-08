@@ -1,7 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { WebsocketProvider } from "y-websocket";
 import { syncedStore } from "@syncedstore/core";
-import { useSyncedStore } from "@syncedstore/react";
 
 export type DataStore = {
   channels: Record<string, Channel>;
@@ -28,6 +27,7 @@ export const SyncedStoreContext = createContext<SyncedStoreContextType | null>(
 type SyncedStoreContextType = {
   store: ReturnType<typeof syncedStore<DataStore>>;
   config: SyncConfig | null;
+  syncStore: ReturnType<typeof syncedStore<DataStore>>;
   setConfig: React.Dispatch<React.SetStateAction<SyncConfig | null>>;
   wsProvider: WebsocketProvider | null;
   connected: boolean;
@@ -43,7 +43,6 @@ export function useStoreContext() {
   return context;
 }
 
-export function useReactiveStore(): ReturnType<typeof syncedStore<DataStore>> {
-  const { store } = useStoreContext();
-  return useSyncedStore(store);
+export function useReactiveStore() {
+  return useStoreContext().syncStore;
 }
