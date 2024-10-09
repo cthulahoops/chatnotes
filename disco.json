@@ -2,7 +2,8 @@
     "version": "1.0",
     "services": {
         "web": {
-            "port": 80
+            "port": 80,
+            "command": "caddy run --config /etc/caddy/Caddyfile"
         },
         "websocket": {
             "command": "npx y-websocket",
