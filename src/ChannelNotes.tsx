@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import AddNoteForm from "./AddNoteForm";
 import Note from "./Note";
@@ -27,16 +27,14 @@ export default function ChannelNotes() {
     });
   };
 
-  if (!channel) {
-    return <Navigate to="/" />;
-  }
+  const notes = channel?.notes || [];
 
   return (
     <main>
       <section className="channel-notes" ref={channelNotesRef}>
         <h2>#{channelId}</h2>
         <div>
-          {channel.notes.map((note, index) => (
+          {notes.map((note, index) => (
             <Note
               key={index}
               content={note.content}
