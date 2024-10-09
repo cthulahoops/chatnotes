@@ -2,7 +2,7 @@
     "version": "1.0",
     "services": {
         "web": {
-            "type": "generator"
+            "port": 80
         },
         "websocket": {
             "command": "npx y-websocket",

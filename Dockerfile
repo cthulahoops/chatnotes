@@ -10,3 +10,7 @@ RUN npm install
 # copy rest and build
 COPY . /code/.
 RUN --mount=type=secret,id=.env env $(cat /run/secrets/.env | xargs) npm run build
+
+FROM caddy:2
+COPY ./Caddyfile /etc/caddy/Caddyfile
+COPY --from=0 /code/dist /usr/share/caddy
